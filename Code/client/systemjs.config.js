@@ -10,8 +10,7 @@
         '@angular': 'node_modules/@angular',
         'rxjs': 'node_modules/rxjs',
         'angular2-toaster': 'node_modules/angular2-toaster',
-        'angular2-modal': 'node_modules/angular2-modal',
-        'ng-lightning': 'node_modules/ng-lightning'
+        'ng2-bs3-modal': 'node_modules/ng2-bs3-modal'
     };
     // packages tells the System loader how to load when no filename and/or no extension
     var packages = {
@@ -28,21 +27,8 @@
         'angular2-toaster': {
             defaultExtension: 'js'
         },
-        'angular2-modal': {
-            defaultExtension: 'js',
-            main: 'index.js'
-        },
-        'angular2-modal/platform-browser': {
-            main: 'index.js',
-            defaultExtension: 'js'
-        },
-        'angular2-modal/plugins/bootstrap': {
-            main: 'index.js',
-            defaultExtension: 'js'
-        },
-        'ng-lightning': {
-            main: 'ng-lightning.js',
-            defaultExtension: 'js'
+        'ng2-bs3-modal': {
+             defaultExtension: 'js'
         }
     }
     var ngPackageNames = [
@@ -65,11 +51,7 @@
     });
     var config = {
         map: map,
-        packages: packages,
-        paths: {
-            'tether': 'https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.js',
-            'ts-helpers': 'node_modules/ng-lightning/node_modules/ts-helpers/index.js'
-        }
+        packages: packages
     }
     System.config(config);
 })(this);

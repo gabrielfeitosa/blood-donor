@@ -1,43 +1,7 @@
-<donor-modal></donor-modal>
-<div class="container">
-    <h1>Donor Form</h1>
-    <toaster-container></toaster-container>
-    <form *ngIf="donor" (ngSubmit)="save()" #donorForm="ngForm">
-        <div class="form-group">
-            <label for="firstName">First Name</label>
-            <input ngControl="firstName" [(ngModel)]="donor.firstName" #firstName="ngForm" class="form-control" placeholder="First Name" required/>
-            <div [hidden]="firstName.valid || firstName.pristine" class="alert alert-danger">
-                <b>First Name</b> is required
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="lastName">Last Name</label>
-            <input ngControl="lastName" [(ngModel)]="donor.lastName" #lastName="ngForm" class="form-control" placeholder="Last name" required/>
-            <div [hidden]="lastName.valid || lastName.pristine" class="alert alert-danger">
-                <b>Last Name</b> is required
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="group">Blood Group</label>
-            <select ngControl="bloodGroup" [(ngModel)]="donor.bloodGroup" class="form-control" required>
-                <option *ngFor="let g of bloodGroups" [value]="g">{{g}}</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" ngControl="email" [(ngModel)]="donor.email" #email="ngForm" class="form-control" placeholder="Email" required pattern="[^\s@]+@[^\s@]+\.[^\s@]+" />
-            <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
-                <b>Email</b> is invalid
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="contactNumber">Contact Number</label>
-            <input ngControl="contactNumber" [(ngModel)]="donor.contactNumber" #contactNumber="ngForm" class="form-control" placeholder="Contact Number" required pattern="^(\+|00)[0-9]{2} [0-9]{3} [0-9]{4} [0-9]{3}"/>
-            <div [hidden]="contactNumber.valid || contactNumber.pristine" class="alert alert-danger">
-                <b>Contact Number</b> is invalid
-            </div>
-        </div>
-
-        <button type="submit" class="btn btn-default" [disabled]="!donorForm.form.valid">Submit</button>
-    </form>
+<toaster-container></toaster-container>
+<donor-modal #donorModal></donor-modal>
+<h1>{{title}}</h1>
+<div *ngIf="donor">
+<button class="btn btn-danger" (click)="delete()">Delete</button>
+<button class="btn btn-primary"(click)="edit()">Edit</button>
 </div>

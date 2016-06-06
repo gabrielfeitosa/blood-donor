@@ -1,28 +1,30 @@
-import { Component, OnInit }     from '@angular/core';
-import { Map, SceneView, MapView, Search, Locator, PopupTemplate, Point, SimpleMarkerSymbol, Graphic} from 'esri-mods';
+import { Component, OnInit, ViewChild }     from '@angular/core';
+import { Map, MapView, Search, PopupTemplate} from 'esri-mods';
 import { GeolocationService }     from './../util/geolocation.service';
 import { MapService }     from './map.service';
 import { DonorService }     from './../donor/donor.service';
+import { DonorModalComponent } from './../donor/modal/donor-modal.component';
 import { Donor }     from './../donor/donor';
 
 @Component({
     selector: 'map',
     template: `
+          <donor-modal #donorModal></donor-modal>
           <div id="map"></div>
     `,
-    styleUrls: ['app/map/map.component.css']
+    styleUrls: ['app/map/map.component.css'],
+    directives: [DonorModalComponent]
 })
 
 export class MapComponent implements OnInit {
+    
+    @ViewChild('donorModal')
+    modal: DonorModalComponent;
     
     donor: Donor;
     
     map: Map = new Map({
         basemap: "streets"
-    });
-
-    locator: Locator = new Locator({
-           url: "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"
     });
 
     view:  MapView;
@@ -69,50 +71,32 @@ export class MapComponent implements OnInit {
       });
       
       this.view.then(() => this.mapService.watchView(this.view));
-
+      this.listenClickView();
     }
     
-    watchView() {
+    listenClickView() {
       this.view.on("click", evt => {
-        var lat = Math.round(evt.mapPoint.latitude * 1000) / 1000;
-        var lon = Math.round(evt.mapPoint.longitude * 1000) / 1000;
-      
-        var saveAction = {
-          title: "Save",
-          id: "save-this"
-        };
-
-        var cancelAction = {
-          title: "Cancel",
-          id: "cancel-this"
-        };
-      
-       var template = new PopupTemplate({
-            title: "Donor: [" + lon + ", " + lat + "]",
-            location: evt.mapPoint,
-            content: '<input [(ngModel)]="donor.name" placeholder="name" />',
-            actions: [cancelAction, saveAction]
-        });
+        let lat = Math.round(evt.mapPoint.latitude * 1000) / 1000;
+        let lon = Math.round(evt.mapPoint.longitude * 1000) / 1000;
         
-        this.view.popup.open(template);
         
-        this.view.popup.on("trigger-action", function(evt) {
-          if (evt.action.id === "save-this") {
-            
-          }
-        });
+        let _id = this.mapService.getIdPoint(lat,lon);
         
-        let donor:Donor = new Donor();
-        donor.name = "Donor: [" + lon + ", " + lat + "]";
-        //this.donorService.save(donor);
-        
-        // this.locator.locationToAddress(evt.mapPoint)
-        //   .then(response => {
-        //     this.view.popup.content = response.address.Match_addr;
-        //   }).otherwise(() => {
-        //     this.view.popup.content= "No address was found for this location";
-        //   });
-    
+        if(!_id){
+          this.mapService.locationToAddress(evt.mapPoint)
+            .then(loc =>{
+              this.modal.newDonor(loc);
+            },()=>{
+              var template = new PopupTemplate({
+                  title: "No donuts for you =(",
+                  location: evt.mapPoint,
+                  content: 'No address was found for this location'
+              });
+              this.view.popup.open(template);
+            });
+        }else{
+          this.modal.infoDonor(_id);
+        }
       }); 
     }
 }

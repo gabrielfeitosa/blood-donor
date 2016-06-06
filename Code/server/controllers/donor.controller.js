@@ -10,22 +10,20 @@ module.exports = function(app) {
 
     donor.find = function(req, res) {
         var query = {};
-        if (req.query.length) {
-            query = {
-                $and: [{
-                    "coords.lat": {
-                        $gt: req.query.ymin,
-                        $lt: req.query.ymax
-                    }
-                }, {
-                    "coords.lon": {
-                        $gt: req.query.xmin,
-                        $lt: req.query.xmax
-                    }
-                }, ]
-            };
-        }
-        
+        query = {
+            $and: [{
+                "coords.lat": {
+                    $gt: req.query.ymin,
+                    $lt: req.query.ymax
+                }
+            }, {
+                "coords.lon": {
+                    $gt: req.query.xmin,
+                    $lt: req.query.xmax
+                }
+            }, ]
+        };
+
         Donor.find(query).then(function(data) {
             res.json(data);
         }).catch(function(err) {
@@ -43,7 +41,7 @@ module.exports = function(app) {
                 }
                 res.json(data);
             }).catch(function(err) {
-                console.log('hero.findById ' + err);
+                console.log('donor.findById ' + err);
                 res.status(500).send(err);
             });
     }
@@ -59,15 +57,15 @@ module.exports = function(app) {
                 res.status(500).send(err);
             });
     };
-    
-    donor.update = function (req, res) {
+
+    donor.update = function(req, res) {
 
         Donor.findByIdAndUpdate(req.params.id, req.body)
-            .then(function (donor) {
+            .then(function(donor) {
                 GlobalEventEmitter.emit('donorUpdated', donor);
                 res.json(donor);
-            }).catch(function (err) {
-                console.log('donor.update '+err);
+            }).catch(function(err) {
+                console.log('donor.update ' + err);
                 res.status(500).send(err);
             });
     }

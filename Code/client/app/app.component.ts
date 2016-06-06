@@ -28,12 +28,12 @@ import { MapService } from './map/map.service';
         path: '/donor/:id',
         name: 'DonorDetail',
         component: DonorDetailComponent,
-        useAsDefault: true
     },
     {
         path: '/map',
         name: 'Map',
-        component: MapComponent
+        component: MapComponent,
+        useAsDefault: true
     }
 ])
 

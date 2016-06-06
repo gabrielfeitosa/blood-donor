@@ -7,7 +7,7 @@ declare var io: any;
 
 @Injectable()
 export class MapService {
-  locator: Locator = new Locator({
+    locator: Locator = new Locator({
            url: "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"
     });
     
@@ -38,15 +38,24 @@ export class MapService {
     this.view = view;
     this.loadData();
 
-    this.view.on("click", evt => {
-          var lat = Math.round(evt.mapPoint.latitude * 1000) / 1000;
-          var lon = Math.round(evt.mapPoint.longitude * 1000) / 1000;
-          console.log(lat +' '+lon);
-     });     
      this.view.watch("extent", evt =>{
       this.loadData();
-       
      });
+  }
+  
+  getIdPoint(lat, lon){
+    for(let p in this.points){
+      let point = this.points[p];
+      if(point.geometry.latitude === lat && point.geometry.longitude === lon){
+        return p;  
+      }
+    }
+    return null;
+  }
+  
+  locationToAddress(mapPoint){
+    return this.locator.locationToAddress(mapPoint);
+    
   }
   
   private loadData(){
@@ -92,28 +101,10 @@ export class MapService {
 
     var pointGraphic = new Graphic({
       geometry: point,
-      symbol: markerSymbol,
-      attributes: {
-         "firstName": donor.firstName,
-         "lastName": donor.lastName,
-         "contactNumber": donor.contactNumber,
-         "email": donor.email,
-         "bloodGroup": donor.bloodGroup
-      },
-      popupTemplate: this.getTemplate()
+      symbol: markerSymbol
     });
 
     return pointGraphic;
   }
     
-  private getTemplate(){
-    return {
-          title: "Donor",
-          content: "<b>First Name:</b> {firstName}<br>" +
-            "<b>Last Name:</b> {lastName}<br>" +
-            "<b>Blood Group: </b> {bloodGroup}<br>" +
-            "<b>Contact Number: </b> {contactNumber}<br>" +
-            "<b>Email: </b> {email}<br>"
-        };
-  }
 }
