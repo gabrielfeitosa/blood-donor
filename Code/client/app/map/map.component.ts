@@ -87,12 +87,11 @@ export class MapComponent implements OnInit {
             .then(loc =>{
               this.modal.newDonor(loc);
             },()=>{
-              var template = new PopupTemplate({
+              this.view.popup.open({
                   title: "No donuts for you =(",
                   location: evt.mapPoint,
                   content: 'No address was found for this location'
               });
-              this.view.popup.open(template);
             });
         }else{
           this.modal.infoDonor(_id);
