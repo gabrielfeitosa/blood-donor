@@ -5,4 +5,8 @@ config.db = {
     debug: true
 };
 
+config.server = {
+    port: 8081
+}
+
 module.exports = config;

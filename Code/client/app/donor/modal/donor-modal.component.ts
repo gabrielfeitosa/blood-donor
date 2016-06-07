@@ -1,6 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import { MODAL_DIRECTIVES, ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
-import { ToasterContainerComponent, ToasterService, BodyOutputType, ToasterConfig} from 'angular2-toaster/angular2-toaster';
+import { ToasterContainerComponent, ToasterService, BodyOutputType, ToasterConfig, Toast} from 'angular2-toaster/angular2-toaster';
 import { Donor} from  './../donor';
 import { DonorService } from './../donor.service';
 
@@ -49,13 +49,11 @@ export class DonorModalComponent {
     newDonor(locator: any){
         this.infoState = false;
         this.donor = new Donor();
-        this.donor = {
-           coords: {
+        this.donor.coords = {
                 lat: Math.round(locator.location.latitude * 1000) / 1000,
                 lon: Math.round(locator.location.longitude * 1000) / 1000
-            },
-            address: locator.address.Match_addr
-        }
+        };
+        this.donor.address= locator.address.Match_addr;
         this.open();
     }
     
@@ -95,7 +93,14 @@ export class DonorModalComponent {
                 };
                 this.toasterService.pop(toast);
             })
-            .catch(error => this.error = error);
+            .catch(error => {
+                var toast : Toast = {
+                    type: 'error',
+                    title: 'Donor Created Error',
+                    body: error
+                };
+                this.toasterService.pop(toast);
+            });
     }
     
     private getToastTemplate(donor: Donor){

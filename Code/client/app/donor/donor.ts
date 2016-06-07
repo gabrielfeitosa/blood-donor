@@ -5,4 +5,7 @@ export class Donor {
     contactNumber: String;
     email: String;
     bloodGroup: String;
+    coords: any;
+    address: String;
+    ip: String;
 }

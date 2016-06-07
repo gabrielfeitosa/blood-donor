@@ -3,7 +3,7 @@ import { RouteParams } from '@angular/router-deprecated';
 import { DonorModalComponent } from './../modal/donor-modal.component';
 import { DonorService } from './../donor.service';
 import { Donor} from  './../donor';
-import { ToasterContainerComponent, ToasterService} from 'angular2-toaster/angular2-toaster';
+import { ToasterContainerComponent, ToasterService, Toast} from 'angular2-toaster/angular2-toaster';
 
 @Component({
     selector: 'donor-detail',

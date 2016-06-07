@@ -6,7 +6,7 @@ var cors = require('cors');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io').listen(server);
-var port = 8081;
+var port = config.server.port;
 
 require('./config/database')(config.db);
 app.use(cors());
@@ -26,3 +26,5 @@ io.on('connection', require('./util/socket'));
 server.listen(port, function () {
     console.log('Servidor rodando na porta ' + port);
 });
+
+module.exports = app;

@@ -1,6 +1,7 @@
 import { Injectable }    from '@angular/core';
 import { MapView, Point, SimpleMarkerSymbol, Graphic, Locator, webMercatorUtils } from 'esri-mods';
 import { DonorService }     from './../donor/donor.service';
+import { Donor }     from './../donor/donor';
 import {AppSettings} from './../util/appSettings';
 
 declare var io: any;

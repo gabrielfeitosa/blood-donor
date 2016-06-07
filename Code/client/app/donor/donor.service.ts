@@ -7,11 +7,11 @@ import {AppSettings} from './../util/appSettings';
 @Injectable()
 export class DonorService {
   
-  private url =  `${AppSettings.API_ENDPOINT}/donor`;
+  private url =  `${AppSettings.ENDPOINT}/api/donor`;
   
   constructor(private http: Http) { }
   
-  getDonors(query: any = {}): Promise<Hero[]> {
+  getDonors(query: any = {}): Promise<Donor[]> {
     let params: URLSearchParams = new URLSearchParams();
     for(let key in query){
       params.set(key, query[key]);
@@ -23,7 +23,7 @@ export class DonorService {
                .catch(this.handleError);
   }
   
-  getDonor(id: number) {
+  getDonor(id: String) {
      let url = `${this.url}/${id}`;
     return this.http.get(url)
                .toPromise()
@@ -31,7 +31,7 @@ export class DonorService {
                .catch(this.handleError);
   }
   
-  save(donor: Donor): Promise<Hero>  {
+  save(donor: Donor): Promise<Donor>  {
     if (donor._id) {
       return this.put(donor);
     }
@@ -48,7 +48,7 @@ export class DonorService {
                .catch(this.handleError);
   }
   
-  private post(donor: Donor): Promise<Hero> {
+  private post(donor: Donor): Promise<Donor> {
     let headers = new Headers({
       'Content-Type': 'application/json'});
     return this.http

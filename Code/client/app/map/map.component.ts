@@ -39,7 +39,7 @@ export class MapComponent implements OnInit {
 
       this.geolocationService.getLocation()
         .then(e => this.createView(e))
-        .catch(e => this.createView());
+        .catch(() => this.createView());
     }    
     
     createView(pos: any){

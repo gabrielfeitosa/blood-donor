@@ -14,11 +14,21 @@ module.exports = function() {
         },
         contactNumber: {
             type: String,
-            required: true
+            required: true,
+            validate: {
+                validator: function(v) {
+                    return /^(\+|00)[0-9]{2} [0-9]{3} [0-9]{4} [0-9]{3}/.test(v);
+                }
+            }
         },
         email: {
             type: String,
-            required: true
+            required: true,
+            validate: {
+                validator: function(v) {
+                    return /[^\s@]+@[^\s@]+\.[^\s@]+/.test(v);
+                }
+            }
         },
         bloodGroup: {
             type: String,

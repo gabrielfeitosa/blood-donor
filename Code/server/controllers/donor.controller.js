@@ -10,6 +10,10 @@ module.exports = function(app) {
 
     donor.find = function(req, res) {
         var query = {};
+        if(!(req.query.ymin && req.query.ymax && req.query.xmin && req.query.xmax)){
+            res.status(400).send({message: 'Invalid parameters'});
+            return;
+        }
         query = {
             $and: [{
                 "coords.lat": {
@@ -42,7 +46,7 @@ module.exports = function(app) {
                 res.json(data);
             }).catch(function(err) {
                 console.log('donor.findById ' + err);
-                res.status(500).send(err);
+                res.status(400).send(err);
             });
     }
 
@@ -54,7 +58,7 @@ module.exports = function(app) {
                 res.json(data);
             }).catch(function(err) {
                 console.error('donor.create ' + err);
-                res.status(500).send(err);
+                res.status(400).send(err);
             });
     };
 
@@ -66,7 +70,7 @@ module.exports = function(app) {
                 res.json(donor);
             }).catch(function(err) {
                 console.log('donor.update ' + err);
-                res.status(500).send(err);
+                res.status(400).send(err);
             });
     }
 
@@ -78,8 +82,18 @@ module.exports = function(app) {
             })
             .catch(function(err) {
                 console.log('hero.delete ' + err);
-                res.status(500).send(err);
+                res.status(400).send(err);
             });
+    }
+
+    donor.clean = function(req, res) {
+        Donor.remove({})
+        .exec(function(err, data){
+            if (err){
+              res.status(400).send(err);      
+            } 
+            res.status(200).send(data);      
+        });
     }
 
     return donor;
